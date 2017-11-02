@@ -219,7 +219,7 @@
             [ i for i in range(8) if i %2 == 0 ]
             [0,2,4,6]
 
-    tab补全
+    tab补全(IDLE)
 
         # vim /usr/lib/python2.7/dist-packages/tab.py
         # python startup file
@@ -496,23 +496,23 @@
                 x = line.split(":")                  # 冒号分割定义序列
                 #x = [ x for x in line.split(":") ]  # 冒号分割定义序列
                 #x = [ x.split("/") for x in line.split(":") ]  # 先冒号分割,在/分割 打印x[6][1]
-                print x[6],"\n",
+                print(x[6],"\n",)
             f.close()
 
         读文件2
             f = file('/etc/passwd')
             c = f.readlines()       # 读入所有文件内容,可反复读取,大文件时占用内存较大
             for line in c:
-                print line.rstrip(),
+                print(.rstrip(),)
             f.close()
 
         读文件3
             for i in open('b.txt'):   # 直接读取也可迭代,并有利于大文件读取,但不可反复读取
-                print i,
+                print(i,)
 
         追加日志
             log = open('/home/peterli/xuesong','a')
-            print >> log,'faaa'
+            print(>> log,'faaa')
             log.close()
 
         with读文件
@@ -520,9 +520,9 @@
             # 自动关闭文件、线程锁的自动获取和释放等
             with open('a.txt') as f:
                 for i in f:
-                    print i
-                print f.read()        # 打印所有内容为字符串
-                print f.readlines()   # 打印所有内容按行分割的列表
+                    print(i)
+                print(f.read())        # 打印所有内容为字符串
+                print(f.readlines())   # 打印所有内容按行分割的列表
 
         文件随机读写
 
@@ -537,6 +537,9 @@
             # 改变指针超出文件尾部,会造成文件洞,ll看占用较大，但du -sh却非常小
             f.read(65535)  # 读取64K字节
             f.write("str") # 写会覆盖当前指针后的响应字符,无插入功能
+			
+			待增加例子：
+			
 
     内建函数
 
@@ -547,7 +550,7 @@
         len(obj)            # 返回对象或序列长度
         open(file,mode)     # 打开文件 #mode (r 读,w 写, a追加)
         range(0,3)          # 返回一个整形列表
-        raw_input("str:")   # 等待用户输入
+        input("str:")   	# 等待用户输入
         type(obj)           # 返回对象类型
         abs(-22)            # 绝对值
         random              # 随机数
@@ -623,7 +626,6 @@
         dict copy()                             # 返回字典(浅复制)的一个副本
         dict.fromkeys(seq,val=None)             # 创建并返回一个新字典,以seq中的元素做该字典的键,val做该字典中所有键对的初始值
         dict.get(key,default=None)              # 对字典dict中的键key,返回它对应的值value,如果字典中不存在此键,则返回default值
-        dict.has_key(key)                       # 如果键在字典中存在,则返回True 用in和not in代替
         dict.items()                            # 返回一个包含字典中键、值对元组的列表
         dict.keys()                             # 返回一个包含字典中键的列表
         dict.iter()                             # 方法iteritems()、iterkeys()、itervalues()与它们对应的非迭代方法一样,不同的是它们返回一个迭代子,而不是一个列表
