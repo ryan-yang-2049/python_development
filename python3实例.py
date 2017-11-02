@@ -297,9 +297,7 @@
     装饰器
 
         # 为已存在的功能添加额外的功能,只在初始化脚本的时候执行一次
-
         #!/usr/bin/env python
-
         def deco(func):
             def wrapper(*args, **kwargs):
                 print "Wrap start"
@@ -511,8 +509,12 @@
                 print(i,)
 
         追加日志
-            log = open('/home/peterli/xuesong','a')
-            print(>> log,'faaa')
+            import sys
+            stdout_backup = sys.stdout
+            log = open('./log.txt','a')
+            sys.stdout = log
+            for i in range(0,10):
+                print('step %s'% i)
             log.close()
 
         with读文件
