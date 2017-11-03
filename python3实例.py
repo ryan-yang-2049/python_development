@@ -564,27 +564,26 @@
         cmp(x,y)            # 比较两个对象    #根据比较结果返回一个整数，如果x<y，则返回-1；如果x>y，则返回1,如果x==y则返回0
         max()               # 字符串中最大的字符
         min()               # 字符串中最小的字符
-        sorted()            # 对序列排序
-        reversed()          # 对序列倒序
-        enumerate()         # 返回索引位置和对应的值
+       *sorted()            # 对序列排序
+       *reversed()          # 对序列倒序
+       *enumerate()         # 返回索引位置和对应的值
         sum()               # 总和
         list()              # 变成列表可用于迭代
         eval('3+4')         # 将字符串当表达式求值 得到7
-        exec 'a=100'        # 将字符串按python语句执行
-        exec(a+'=new')      # 将变量a的值作为新的变量
+        exec('a=100')       # 将字符串按python语句执行
         tuple()             # 变成元组可用于迭代   #一旦初始化便不能更改的数据结构,速度比list快
-        zip(s,t)            # 返回一个合并后的列表  s = ['11','22']  t = ['aa','bb']  [('11', 'aa'), ('22', 'bb')]
-        isinstance(object,int)    # 测试对象类型 int
-        xrange([lower,]stop[,step])            # 函数与range()类似，但xrnage()并不创建列表，而是返回一个xrange对象
+       *zip(s,t)            # 返回一个合并后的列表  s = ['11','22']  t = ['aa','bb']  [('11', 'aa'), ('22', 'bb')]
+       *isinstance(object,int)    # 测试对象类型 int
+        range([lower,]stop[,step])            # 函数与range()类似，但xrnage()并不创建列表，而是返回一个xrange对象
 
     列表类型内建函数
 
-        list.append(obj)                 # 向列表中添加一个对象obj
-        list.count(obj)                  # 返回一个对象obj在列表中出现的次数
+       *list.append(obj)                 # 向列表中添加一个对象obj
+       *list.count(obj)                  # 返回一个对象obj在列表中出现的次数
         list.extend(seq)                 # 把序列seq的内容添加到列表中
-        list.index(obj,i=0,j=len(list))  # 返回list[k] == obj 的k值,并且k的范围在i<=k<j;否则异常
-        list.insert(index.obj)           # 在索引量为index的位置插入对象obj
-        list.pop(index=-1)               # 删除并返回指定位置的对象,默认是最后一个对象
+       *list.index(obj,i=0,j=len(list))  # 返回list[k] == obj 的k值,并且k的范围在i<=k<j;否则异常
+       *list.insert(index.obj)           # 在索引量为index的位置插入对象obj
+       *list.pop(index=-1)               # 删除并返回指定位置的对象,默认是最后一个对象
         list.remove(obj)                 # 从列表中删除对象obj
         list.reverse()                   # 原地翻转列表
         list.sort(func=None,key=None,reverse=False)  # 以指定的方式排序列表中成员,如果func和key参数指定,则按照指定的方式比较各个元素,如果reverse标志被置为True,则列表以反序排列
@@ -601,10 +600,10 @@
     字符串类型内建方法
 
         string.expandtabs(tabsize=8)                  # tab符号转为空格 #默认8个空格
-        string.endswith(obj,beg=0,end=len(staring))   # 检测字符串是否已obj结束,如果是返回True #如果beg或end指定检测范围是否已obj结束
-        string.count(str,beg=0,end=len(string))       # 检测str在string里出现次数  f.count('\n',0,len(f)) 判断文件行数
+       *string.endswith(obj,beg=0,end=len(staring))   # 检测字符串是否已obj结束,如果是返回True #如果beg或end指定检测范围是否已obj结束
+       *string.count(str,beg=0,end=len(string))       # 检测str在string里出现次数  f.count('\n',0,len(f)) 判断文件行数
         string.find(str,beg=0,end=len(string))        # 检测str是否包含在string中
-        string.index(str,beg=0,end=len(string))       # 检测str不在string中,会报异常
+       *string.index(str,beg=0,end=len(string))       # 检测str不在string中,会报异常
         string.isalnum()                              # 如果string至少有一个字符并且所有字符都是字母或数字则返回True
         string.isalpha()                              # 如果string至少有一个字符并且所有字符都是字母则返回True
         string.isnumeric()                            # 如果string只包含数字字符,则返回True
@@ -615,26 +614,25 @@
         string.upper()                                # 转换字符串中所有小写为大写
         string.lstrip()                               # 去掉string左边的空格
         string.rstrip()                               # 去掉string字符末尾的空格
-        string.replace(str1,str2,num=string.count(str1))  # 把string中的str1替换成str2,如果num指定,则替换不超过num次
-        string.startswith(obj,beg=0,end=len(string))  # 检测字符串是否以obj开头
+       *string.replace(str1,str2,num=string.count(str1))  # 把string中的str1替换成str2,如果num指定,则替换不超过num次
+       *string.startswith(obj,beg=0,end=len(string))  # 检测字符串是否以obj开头
         string.zfill(width)                           # 返回字符长度为width的字符,原字符串右对齐,前面填充0
-        string.isdigit()                              # 只包含数字返回True
-        string.split("分隔符")                        # 把string切片成一个列表
-        ":".join(string.split())                      # 以:作为分隔符,将所有元素合并为一个新的字符串
+       *string.isdigit()                              # 只包含数字返回True
+       *string.split("分隔符")                        # 把string切片成一个列表
+       *":".join(string.split())                      # 以:作为分隔符,将所有元素合并为一个新的字符串
 
     字典内建方法
 
         dict.clear()                            # 删除字典中所有元素
-        dict copy()                             # 返回字典(浅复制)的一个副本
-        dict.fromkeys(seq,val=None)             # 创建并返回一个新字典,以seq中的元素做该字典的键,val做该字典中所有键对的初始值
-        dict.get(key,default=None)              # 对字典dict中的键key,返回它对应的值value,如果字典中不存在此键,则返回default值
-        dict.items()                            # 返回一个包含字典中键、值对元组的列表
-        dict.keys()                             # 返回一个包含字典中键的列表
-        dict.iter()                             # 方法iteritems()、iterkeys()、itervalues()与它们对应的非迭代方法一样,不同的是它们返回一个迭代子,而不是一个列表
+       *dict copy()                             # 返回字典(浅复制)的一个副本
+       *dict.fromkeys(seq,val=None)             # 创建并返回一个新字典,以seq中的元素做该字典的键,val做该字典中所有键对的初始值
+       *dict.get(key,default=None)              # 对字典dict中的键key,返回它对应的值value,如果字典中不存在此键,则返回default值
+       *dict.items()                            # 返回一个包含字典中键、值对元组的列表
+       *dict.keys()                             # 返回一个包含字典中键的列表
         dict.pop(key[,default])                 # 和方法get()相似.如果字典中key键存在,删除并返回dict[key]
         dict.setdefault(key,default=None)       # 和set()相似,但如果字典中不存在key键,由dict[key]=default为它赋值
-        dict.update(dict2)                      # 将字典dict2的键值对添加到字典dict
-        dict.values()                           # 返回一个包含字典中所有值得列表
+       *dict.update(dict2)                      # 将字典dict2的键值对添加到字典dict
+       *dict.values()                           # 返回一个包含字典中所有值得列表
 
         dict([container])     # 创建字典的工厂函数。提供容器类(container),就用其中的条目填充字典
         len(mapping)          # 返回映射的长度(键-值对的个数)
@@ -665,19 +663,28 @@
         s < t                               # 子集测试;s!=t且s中所有元素都是t的成员
         s > t                               # 超集测试;s!=t且t中所有元素都是s的成员
 
-    序列化
-
+    序列化<json,pickle>
+		推荐使用json，因为json是跨语言的写入读取，pickle是python专用。
         #!/usr/bin/python
         import cPickle
         obj = {'1':['4124','1241','124'],'2':['12412','142','1241']}
 
-        pkl_file = open('account.pkl','wb')
-        cPickle.dump(obj,pkl_file)
-        pkl_file.close()
+        with open('account.pkl','wb') as obj_file:
+			pickle.dump(obj,obj_file)
 
-        pkl_file = open('account.pkl','rb')
-        account_list = cPickle.load(pkl_file)
-        pkl_file.close()
+        with open("account.pkl",'rb') as obj_read:
+			info = pickle.load(obj_read)
+			print(info)
+		
+		dump,dumps,load,loads 区别：
+			dumps是将dict转化成str格式，loads是将str转化成dict格式。
+			dump和load也是类似的功能，只是与文件操作结合起来了。
+			dumps 和dump的区别是，dumps是先写到内存，然后在通过文件的写方法写到文件。dump是直接把数据写到文件。load和loads一样。
+			dump是直接写到硬盘，load是直接读取硬盘文件
+			例子：
+				如果使用dumps 则还需要 file_obj.write(data)  #data = json.dumps(dic);f.write(data)
+				如果使用loads 则还需要 file_obj.read()    #data = json.loads(f.read());print(data)
+				
 
     文件对象方法
 
@@ -688,12 +695,11 @@
         file.next()                      # 返回文件的下一行,或在没有其他行时引发StopIteration异常
         file.read(size=-1)               # 从文件读取size个字节,当未给定size或给定负值的时候,读取剩余的所有字节,然后作为字符串返回
         file.readline(size=-1)           # 从文件中读取并返回一行(包括行结束符),或返回最大size个字符
-        file.readlines(sizhint=0)        # 读取文件的所有行作为一个列表返回
-        file.xreadlines()                # 用于迭代,可替换readlines()的一个更高效的方法
+       *file.readlines(sizhint=0)        # 读取文件的所有行作为一个列表返回
         file.seek(off, whence=0)         # 在文件中移动文件指针,从whence(0代表文件起始,1代表当前位置,2代表文件末尾)偏移off字节
         file.tell()                      # 返回当前在文件中的位置
         file.truncate(size=file.tell())  # 截取文件到最大size字节,默认为当前文件位置
-        file.write(str)                  # 向文件写入字符串
+       *file.write(str)                  # 向文件写入字符串
         file.writelines(seq)             # 向文件写入字符串序列seq;seq应该是一个返回字符串的可迭代对象
 
     文件对象的属性
