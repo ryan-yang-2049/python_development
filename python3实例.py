@@ -721,22 +721,22 @@
                 self.length = length
                 self.atleast = atleast
         try:
-            s = raw_input('Enter something --> ')
+            s = input('Enter something --> ')
             if len(s) < 3:
                 raise ShortInputException(len(s), 3)    # 触发异常
         except EOFError:
-            print '\nWhy did you do an EOF on me?'
-        except ShortInputException, x:      # 捕捉指定错误信息
-            print 'ShortInputException:  %d | %d' % (x.length, x.atleast)
+            print('\nWhy did you do an EOF on me?')
+        except ShortInputException as x:      # 捕捉指定错误信息
+            print('ShortInputException:  %d | %d' % (x.length, x.atleast))
         except Exception as err:            # 捕捉所有其它错误信息内容
-            print str(err)
+            print(str(err))
         #except urllib2.HTTPError as err:   # 捕捉外部导入模块的错误
         #except:                            # 捕捉所有其它错误 不会看到错误内容
         #        print 'except'
-        finally:                            # 无论什么情况都会执行 关闭文件或断开连接等
-               print 'finally'
         else:                               # 无任何异常 无法和finally同用
-            print 'No exception was raised.'
+            print('No exception was raised.')
+		finally:                            # 无论什么情况都会执行 关闭文件或断开连接等
+            print('finally')
 
         不可捕获的异常
 
@@ -818,6 +818,7 @@
             raise                    # 重新触发前一个异常,如果之前没有异常,触发TypeError
 
         跟踪异常栈
+			**************没有理解***************************
 
             # traceback 获取异常相关数据都是通过sys.exc_info()函数得到的
             import traceback
@@ -834,9 +835,8 @@
         抓取全部错误信息存如字典
 
             import sys, traceback
-
             try:
-                s = raw_input()
+                s = input()
                 int(s)
             except:
                 exc_type, exc_value, exc_traceback = sys.exc_info()
@@ -847,13 +847,13 @@
                                      'type'    : exc_type.__name__,
                                      'message' : exc_value.message,
                                     }
-
                 del(exc_type, exc_value, exc_traceback)
-                print traceback_details
+                print(traceback_details)
                 f = file('test1.txt', 'a')
                 f.write("%s %s %s %s %s\n" %(traceback_details['filename'],traceback_details['lineno'],traceback_details['name'],traceback_details['type'],traceback_details['message'], ))
                 f.flush()
                 f.close()
+			********************end******************************
 
     调试log
 
@@ -867,7 +867,6 @@
 
     函数式编程的内建函数
 
-        apply(func[,nkw][,kw])          # 用可选的参数来调用func,nkw为非关键字参数,kw为关键字参数;返回值是函数调用的返回值
         filter(func,seq)                # 调用一个布尔函数func来迭代遍历每个seq中的元素;返回一个使func返回值为true的元素的序列
         map(func,seq1[,seq2])           # 将函数func作用于给定序列(s)的每个元素,并用一个列表来提供返回值;如果func为None,func表现为一个身份函数,返回一个含有每个序列中元素集合的n个元组的列表
         reduce(func,seq[,init])         # 将二元函数作用于seq序列的元素,每次携带一堆(先前的结果以及下一个序列元素),连续地将现有的结果和下一个值作用在获得的随后的结果上,最后减少我们的序列为一个单一的返回值;如果初始值init给定,第一个比较会是init和第一个序列元素而不是序列的头两个元素
@@ -895,11 +894,13 @@
         a='中文'                    # 编码未定义按输入终端utf8或gbk
         u=u'中文'                   # 定义为unicode编码  u值为 u'\u4e2d\u6587'
         u.encode('utf8')            # 转为utf8格式 u值为 '\xe4\xb8\xad\xe6\x96\x87'
-        print u                     # 结果显示 中文
-        print u.encode('utf8')      # 转为utf8格式,当显示终端编码为utf8  结果显示 中文  编码不一致则乱码
-        print u.encode('gbk')       # 当前终端为utf8 故乱码
-        ord('4')                    # 字符转ASCII码
-        chr(52)                     # ASCII码转字符
+        print(u)                     # 结果显示 中文
+        print(u.encode('utf8'))      # 转为utf8格式,当显示终端编码为utf8  结果显示 中文  编码不一致则乱码
+        print(u.encode('gbk'))       # 当前终端为utf8 故乱码
+		x = b'\xe4\xb8\xad\xe6\x96\x87'
+		print(x.decode('utf-8'))      #解码 ，结果为：中文
+        ord('4')                    # 字符转ASCII码   结果为：52
+        chr(52)                     # ASCII码转字符    结果为：4
 
     遍历递归
 
