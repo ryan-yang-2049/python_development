@@ -9,7 +9,7 @@
     安装python3
 
         wget https://www.python.org/ftp/python/3.6.3/Python-3.6.3.tgz
-		yum install readline-devel  -y   #防止交互界面的上下左右不可用
+		yum install readline-devel openssl-devel openssl  -y   #防止交互界面的上下左右不可用
 		tar xf Python-3.6.3.tgz
 		./configure --prefix=/usr/local/python363/
 		make && make install
@@ -908,7 +908,7 @@
 
         for i in os.walk('/root/python/5/work/server'):
             print i
-*********************************************************there***************************************************************************************
+**********第二次看的时候在理解**************************
     元类
 
         # 实现动态curd类的或者实例中的方法属性
@@ -960,7 +960,7 @@
 
             # TODO 此处返回一个类对象, 并不是｀Instance｀
             print type("MyClass", (), {})
-
+============================end=======================
 2 常用模块
 
     sys             [系统操作模块]
@@ -968,10 +968,6 @@
         sys.argv              # 取参数列表
         sys.exit(2)           # 退出脚本返回状态 会被try截取
         sys.exc_info()        # 获取当前正在处理的异常类
-        sys.version           # 获取Python解释程序的版本信息
-        sys.maxint            # 最大的Int值  9223372036854775807
-        sys.maxunicode        # 最大的Unicode值
-        sys.modules           # 返回系统导入的模块字段，key是模块名，value是模块
         sys.path              # 返回模块的搜索路径，初始化时使用PYTHONPATH环境变量的值
         sys.platform          # 返回操作系统平台名称
         sys.stdout            # 标准输出
@@ -980,7 +976,7 @@
         sys.exec_prefix       # 返回平台独立的python文件安装的位置
         sys.stdin.readline()  # 从标准输入读一行
         sys.stdout.write("a") # 屏幕输出a
-        sys.path.insert(1, os.path.join(sys.path[0], '/opt/script/'))     # 将/opt/script/目录加入环境变量，可导入相应模块
+        *sys.path.insert(1, os.path.join(sys.path[0], '/opt/script/'))     # 将/opt/script/目录加入环境变量，可导入相应模块
 
     os              [系统模块]
 
@@ -988,11 +984,13 @@
         os.popen('id').read()      # 执行系统命令得到返回结果
         os.system()                # 得到返回状态 返回无法截取
         os.name                    # 返回系统平台 Linux/Unix用户是'posix'
-        os.getenv()                # 读取环境变量
+        os.getenv()                # 读取环境变量,如果没有返回none
         os.putenv()                # 设置环境变量
         os.getcwd()                # 当前工作路径
         os.chdir()                 # 改变当前工作目录
-        os.walk('/root/')          # 递归路径
+        os.listdir('/root')        # 查看 root 目录下的文件
+        os.mkdir('path')           # 创建单层目录，可以设置mode(权限属性)，多层目录用
+        os.walk('/root/')          # 递归路径,得到一个生成器,
         os.environ['HOME']         # 查看系统环境变量
         os.statvfs("/")            # 获取磁盘信息
 
@@ -1002,10 +1000,8 @@
             rename()/renames()     # 重命名文件
             stat()                 # 返回文件信息
             symlink()              # 创建符号链接
-            utime()                # 更新时间戳
-            tmpfile()              # 创建并打开('w+b')一个新的临时文件
+            utime()                # 更文件新时间戳
             walk()                 # 遍历目录树下的所有文件名
-
             oct(os.stat('th1.py').st_mode)[-3:]      # 查看目录权限
 
         目录/文件夹
@@ -1017,8 +1013,8 @@
             rmdir()/removedirs()   # 删除目录/删除多层目录
 
         访问/权限
-            saccess()                    # 检验权限模式
-            chmod('txt',eval("0777"))    # 改变权限模式
+            access()                     # 检验权限模式
+            chmod('txt',mode)            # 改变权限模式,配合stat修改，具体可查看菜鸟教程
             chown()/lchown()             # 改变owner和groupID功能相同,但不会跟踪链接
             umask()                      # 设置默认权限模式
 
@@ -1041,7 +1037,7 @@
                 os.path.join()             # 将分离的各部分组合成一个路径名
                 os.path.spllt()            # 返回(dirname(),basename())元组
                 os.path.splitdrive()       # 返回(drivename,pathname)元组
-                os.path.splitext()         # 返回(filename,extension)元组
+                os.path.splitext()         # 返回(filename,extension<文件后缀，配合join修改文件后缀名>)元组
 
             信息
                 os.path.getatime()         # 返回最近访问时间
@@ -1085,11 +1081,13 @@
             disk.f_bsize * disk.f_bavail / 1024 / 1024 / 1024   # 非root用户剩余空间大小G
             disk.f_bsize * disk.f_blocks / 1024 / 1024 / 1024   # 分区空间总大小
 
-    commands        [执行系统命令]
+    commands        [执行系统命令]（python3 已经没有了，python使用subprocess）
 
         commands.getstatusoutput('id')       # 返回元组(状态,标准输出)
         commands.getoutput('id')             # 只返回执行的结果, 忽略返回值
         commands.getstatus('file')           # 返回ls -ld file执行的结果
+
+
 
     re              [perl风格正则]
 
@@ -1105,11 +1103,11 @@
 
         零宽断言
             str = 'aaa111aaa , bbb222&, 333ccc'
-            re.compile('\d+(?=[a-z]+)').findall(str)          # 前向界定 (?=exp) 找出连续的数字并且最后一个数字跟着至少一个a-z ['111', '333']
-            re.compile(r"\d+(?![a-z]+)").findall(str)         # 前向否定界定 (?!exp)  找出连续数字，且最后一个数字后不能跟a-z  ['11', '222', '33']
-            re.compile(r"(?<=[a-z])\d+").findall(str)         # 反向界定 (?<=exp) 逆序环视 找出连续的数字，且第一个数字前面是a-z  ['111', '222']
-            re.compile(r"(?<![a-z])\d+").findall(str)         # 反向否定界定 (?<!exp) 否定逆序环视  找出连续的数字，且第一个数字前不能是a-z  ['11', '22', '333']
-            re.compile(r"(?:\d+)").findall(str)               # 无捕获的匹配 (?:exp)
+            re.compile('\d+(?=[a-z]+)').findall(str)          # 前向界定 (?=exp)：（表示匹配正则前面的位置） 找出连续的数字并且最后一个数字跟着至少一个a-z ['111', '333']
+            re.compile(r"\d+(?![a-z]+)").findall(str)         # 前向否定界定 (?!exp)：（匹配后面跟的不是exp的位置）  找出连续数字，且最后一个数字后不能跟a-z  ['11', '222', '33']
+            re.compile(r"(?<=[a-z])\d+").findall(str)         # 反向界定 (?<=exp) ：（匹配exp后面的位置）  逆序环视 找出连续的数字，且第一个数字前面是a-z  ['111', '222']
+            re.compile(r"(?<![a-z])\d+").findall(str)         # 反向否定界定 (?<!exp)：（匹配前面不是exp的位置） 否定逆序环视  找出连续的数字，且第一个数字前不能是a-z  ['11', '22', '333']
+            re.compile(r"(?:\d+)").findall(str)               # 无捕获的匹配 (?:exp)：（?: 表示 类似（...），但是不表示一个组）
             s= 'Tom:9527 , Sharry:0003 '
             re.match( r'(?P<name>\w+):(?P<num>\d+)' , s).group(0)   # 捕获组 <num>第二个标签变量[9527] 获取 group("num") 等同 group(2)[9527], group(0)全部[Tom:9527]
 
