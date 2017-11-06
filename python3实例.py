@@ -1128,8 +1128,6 @@
             re.findall(u'\u4e2d\u56fd', s.text, re.S)
 
 
-==================there============
-
     csv             [访问csv逗号分隔的文件]
 
         csv读配置文件
@@ -1158,8 +1156,11 @@
     shutil          [提供高级文件访问功能]
 
         import shutil
-        shutil.copyfile('data.db', 'archive.db')             # 拷贝文件
-        shutil.move('/build/executables', 'installdir')      # 移动文件或目录
+        shutil.copyfile('data.db', 'archive.db')             		  # 拷贝文件
+        shutil.move('/build/executables', 'installdir')               # 移动文件或目录
+		shutil.copyfileobj(open('old.xml','r'), open('new.xml', 'w')) #把一个文件里面的内容追加到另外一个文件的结尾
+		shutil.make_archive('abc','tar','/opt/gitcode/python_development/examples') #将/opt/gitcode/python_development/examples，下的文件打包成abc.tar 到当前目录、shutil 对压缩包的处理是通过调用ZipFile 和 TarFile两个模块来进行的。
+		#shutil 功能还有： 仅拷贝文件权限，仅考本文件状态和信息，拷贝文件和权限，拷贝文件和状态信息
 
     dircache        [目录文件列表缓存]
 
@@ -1180,7 +1181,7 @@
         random.random()                 # 随机浮点数
         random.randrange(6)             # 随机整数范围
 
-    tempfile        [创建临时文件]
+    tempfile        [创建临时文件:临时文件来存储数据，但不需要同其他程序共享]
 
         import os
         import tempfile
@@ -1191,10 +1192,10 @@
             temp.writelines(['first\n', 'second\n'])   # 写入多行
             temp.seek(0)                               # 写入
              
-            print temp.read()                          # 读取
+            print(temp.read())                          # 读取
 
             for line in temp:                          # 循环读取每一行
-                print line.rstrip()
+                print(line.rstrip())
         finally:
             temp.close()                               # 关闭后删除临时文件
 
@@ -1224,89 +1225,38 @@
 
         发送邮件内容
 
-            #!/usr/bin/python
-            #encoding:utf8
-            # 导入 smtplib 和 MIMEText
-            import smtplib
-            from email.mime.text import MIMEText
+            #!/usr/bin/env python3
+			#coding:utf-8
+			import smtplib
+			import email.mime.multipart
+			import email.mime.text
 
-            # 定义发送列表
-            mailto_list=["272121935@qq.com","272121935@163.com"]
+			def send_mail(message):
+				mailto_list = ["abc@phc-dow.com","def@phc-dow.com"]
+				msg = email.mime.multipart.MIMEMultipart()
+				msg['from'] = 'ryan9093@163.com'             #发件人地址
+				msg['to'] = ";".join(mailto_list)           #收件人地址
+				msg['subject'] = 'python3 smtp test'         #主题
+				content = '''''
+					你好，这是一封自动发送的邮件。
+					内容为：%s
+				''' % (message)    #发件内容
+				txt = email.mime.text.MIMEText(content)
+				msg.attach(txt)
 
-            # 设置服务器名称、用户名、密码以及邮件后缀
-            mail_host = "smtp.163.com"
-            mail_user = "mailuser"
-            mail_pass = "password"
-            mail_postfix="163.com"
+				smtp = smtplib
+				smtp = smtplib.SMTP()
+				smtp.connect('smtp.163.com', '25')                    #发件箱服务器以及端口
+				smtp.login('ryan9093@163.com', 'smtp认证码')     #发件箱，以及发件箱的smtp认证码
+				smtp.sendmail('ryan9093@163.com', mailto_list, str(msg))   #发件箱，收件箱，
+				smtp.quit()
 
-            # 发送邮件函数
-            def send_mail(to_list, sub):
-                me = mail_user + "<"+mail_user+"@"+mail_postfix+">"
-                fp = open('context.txt')
-                msg = MIMEText(fp.read(),_charset="utf-8")
-                fp.close()
-                msg['Subject'] = sub
-                msg['From'] = me
-                msg['To'] = ";".join(to_list)
-                try:
-                    send_smtp = smtplib.SMTP()
-                    send_smtp.connect(mail_host)
-                    send_smtp.login(mail_user, mail_pass)
-                    send_smtp.sendmail(me, to_list, msg.as_string())
-                    send_smtp.close()
-                    return True
-                except Exception, e:
-                    print str(e)
-                    return False
+			mess = "python3 邮件测试"
+			send_mail(mess)
+                
 
-            if send_mail(mailto_list,"标题"):
-                print "测试成功"
-            else:
-                print "测试失败"
-
-        发送附件
-
-            #!/usr/bin/python
-            #encoding:utf8
-            import smtplib
-            from email.mime.multipart import MIMEMultipart
-            from email.mime.base import MIMEBase
-            from email import encoders
-
-            def send_mail(to_list, sub, filename):
-                me = mail_user + "<"+mail_user+"@"+mail_postfix+">"
-                msg = MIMEMultipart()
-                msg['Subject'] = sub
-                msg['From'] = me
-                msg['To'] = ";".join(to_list)
-                submsg = MIMEBase('application', 'x-xz')
-                submsg.set_payload(open(filename,'rb').read())
-                encoders.encode_base64(submsg)
-                submsg.add_header('Content-Disposition', 'attachment', filename=filename)
-                msg.attach(submsg)
-                try:
-                    send_smtp = smtplib.SMTP()
-                    send_smtp.connect(mail_host)
-                    send_smtp.login(mail_user, mail_pass)
-                    send_smtp.sendmail(me, to_list, msg.as_string())
-                    send_smtp.close()
-                    return True
-                except Exception, e:
-                    print str(e)[1]
-                    return False
-
-            # 设置服务器名称、用户名、密码以及邮件后缀
-            mail_host = "smtp.163.com"
-            mail_user = "xuesong"
-            mail_pass = "mailpasswd"
-            mail_postfix = "163.com"
-            mailto_list = ["272121935@qq.com","quanzhou722@163.com"]
-            title = 'check'
-            filename = 'file_check.html'
-            if send_mail(mailto_list,title,filename):
-                print "发送成功"
-            else:
-                print "发送失败"
+        发送附件，基于ssl的邮件，带图片的邮件，可查看：http://www.cnblogs.com/lonelycatcher/archive/2012/02/09/2343463.html
+		
 
     gzip            [解压缩gzip 删除原文件]
 
@@ -1350,24 +1300,42 @@
         tar.close()
 
     zipfile         [解压缩zip 最大2G]
+	
+        # 压缩zip	
+		#!/usr/bin/env python3
+		#coding:utf-8
+		import zipfile,os
+		def get_zip_file(input_path,result):
+			files = os.listdir(input_path)
+			for file in files:
+				if os.path.isdir(input_path+'/'+file):
+					get_zip_file(input_path+'/'+file,result)
+				else:
+					result.append(input_path+'/'+file)
 
-        # 压缩zip
-        import zipfile,os
-        f = zipfile.ZipFile('filename.zip', 'w' ,zipfile.ZIP_DEFLATED)    # ZIP_STORE 为默认表不压缩. ZIP_DEFLATED 表压缩
-        #f.write('file1.txt')                              # 将文件写入压缩包
-        for path,dir,files in os.walk("tartest"):          # 递归压缩目录
-            for file in files:
-                f.write(os.path.join(path,file))           # 将文件逐个写入压缩包
-        f.close()
+		def zip_path(input_path,output_path,output_name):
+			f = zipfile.ZipFile(output_path+'/'+output_name,'w',zipfile.ZIP_DEFLATED) # ZIP_STORE 为默认表不压缩. ZIP_DEFLATED 表压缩
+			filelists = []
+			get_zip_file(input_path,filelists)
+			for file in filelists:
+				f.write(file)
+			f.close()
+			return output_path+"/"+output_name
+
+		if __name__ == '__main__':
+			zip_path(r".","/tmp/test",'pythonzip.zip')
+
 
         # 解压zip
-        if zipfile.is_zipfile('filename.zip'):             # 判断一个文件是不是zip文件
-            f = zipfile.ZipFile('filename.zip')
+        if zipfile.is_zipfile('/tmp/test/pythonzip.zip'):             # 判断一个文件是不是zip文件
+            f = zipfile.ZipFile('/tmp/test/pythonzip.zip')
             for file in f.namelist():                      # 返回文件列表
-                f.extract(file, r'/tmp/')                  # 解压指定文件
+                f.extract(file, r'/tmp/test/')                  # 解压指定文件
             #f.extractall()                                # 解压全部
             f.close()
 
+			
+			================================there=========================================
     time/datetime   [时间]
 
         import time
