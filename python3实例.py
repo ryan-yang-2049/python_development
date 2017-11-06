@@ -9,7 +9,7 @@
     安装python3
 
         wget https://www.python.org/ftp/python/3.6.3/Python-3.6.3.tgz
-		yum install readline-devel  -y   #防止交互界面的上下左右不可用
+		yum install readline-devel openssl-devel openssl  -y   #防止交互界面的上下左右不可用
 		tar xf Python-3.6.3.tgz
 		./configure --prefix=/usr/local/python363/
 		make && make install
@@ -721,22 +721,22 @@
                 self.length = length
                 self.atleast = atleast
         try:
-            s = raw_input('Enter something --> ')
+            s = input('Enter something --> ')
             if len(s) < 3:
                 raise ShortInputException(len(s), 3)    # 触发异常
         except EOFError:
-            print '\nWhy did you do an EOF on me?'
-        except ShortInputException, x:      # 捕捉指定错误信息
-            print 'ShortInputException:  %d | %d' % (x.length, x.atleast)
+            print('\nWhy did you do an EOF on me?')
+        except ShortInputException as x:      # 捕捉指定错误信息
+            print('ShortInputException:  %d | %d' % (x.length, x.atleast))
         except Exception as err:            # 捕捉所有其它错误信息内容
-            print str(err)
+            print(str(err))
         #except urllib2.HTTPError as err:   # 捕捉外部导入模块的错误
         #except:                            # 捕捉所有其它错误 不会看到错误内容
         #        print 'except'
-        finally:                            # 无论什么情况都会执行 关闭文件或断开连接等
-               print 'finally'
         else:                               # 无任何异常 无法和finally同用
-            print 'No exception was raised.'
+            print('No exception was raised.')
+		finally:                            # 无论什么情况都会执行 关闭文件或断开连接等
+            print('finally')
 
         不可捕获的异常
 
@@ -818,6 +818,7 @@
             raise                    # 重新触发前一个异常,如果之前没有异常,触发TypeError
 
         跟踪异常栈
+			**************没有理解***************************
 
             # traceback 获取异常相关数据都是通过sys.exc_info()函数得到的
             import traceback
@@ -834,9 +835,8 @@
         抓取全部错误信息存如字典
 
             import sys, traceback
-
             try:
-                s = raw_input()
+                s = input()
                 int(s)
             except:
                 exc_type, exc_value, exc_traceback = sys.exc_info()
@@ -847,13 +847,13 @@
                                      'type'    : exc_type.__name__,
                                      'message' : exc_value.message,
                                     }
-
                 del(exc_type, exc_value, exc_traceback)
-                print traceback_details
+                print(traceback_details)
                 f = file('test1.txt', 'a')
                 f.write("%s %s %s %s %s\n" %(traceback_details['filename'],traceback_details['lineno'],traceback_details['name'],traceback_details['type'],traceback_details['message'], ))
                 f.flush()
                 f.close()
+			********************end******************************
 
     调试log
 
@@ -867,7 +867,6 @@
 
     函数式编程的内建函数
 
-        apply(func[,nkw][,kw])          # 用可选的参数来调用func,nkw为非关键字参数,kw为关键字参数;返回值是函数调用的返回值
         filter(func,seq)                # 调用一个布尔函数func来迭代遍历每个seq中的元素;返回一个使func返回值为true的元素的序列
         map(func,seq1[,seq2])           # 将函数func作用于给定序列(s)的每个元素,并用一个列表来提供返回值;如果func为None,func表现为一个身份函数,返回一个含有每个序列中元素集合的n个元组的列表
         reduce(func,seq[,init])         # 将二元函数作用于seq序列的元素,每次携带一堆(先前的结果以及下一个序列元素),连续地将现有的结果和下一个值作用在获得的随后的结果上,最后减少我们的序列为一个单一的返回值;如果初始值init给定,第一个比较会是init和第一个序列元素而不是序列的头两个元素
@@ -895,11 +894,13 @@
         a='中文'                    # 编码未定义按输入终端utf8或gbk
         u=u'中文'                   # 定义为unicode编码  u值为 u'\u4e2d\u6587'
         u.encode('utf8')            # 转为utf8格式 u值为 '\xe4\xb8\xad\xe6\x96\x87'
-        print u                     # 结果显示 中文
-        print u.encode('utf8')      # 转为utf8格式,当显示终端编码为utf8  结果显示 中文  编码不一致则乱码
-        print u.encode('gbk')       # 当前终端为utf8 故乱码
-        ord('4')                    # 字符转ASCII码
-        chr(52)                     # ASCII码转字符
+        print(u)                     # 结果显示 中文
+        print(u.encode('utf8'))      # 转为utf8格式,当显示终端编码为utf8  结果显示 中文  编码不一致则乱码
+        print(u.encode('gbk'))       # 当前终端为utf8 故乱码
+		x = b'\xe4\xb8\xad\xe6\x96\x87'
+		print(x.decode('utf-8'))      #解码 ，结果为：中文
+        ord('4')                    # 字符转ASCII码   结果为：52
+        chr(52)                     # ASCII码转字符    结果为：4
 
     遍历递归
 
@@ -907,7 +908,7 @@
 
         for i in os.walk('/root/python/5/work/server'):
             print i
-
+**********第二次看的时候在理解**************************
     元类
 
         # 实现动态curd类的或者实例中的方法属性
@@ -959,7 +960,7 @@
 
             # TODO 此处返回一个类对象, 并不是｀Instance｀
             print type("MyClass", (), {})
-
+============================end=======================
 2 常用模块
 
     sys             [系统操作模块]
@@ -967,10 +968,6 @@
         sys.argv              # 取参数列表
         sys.exit(2)           # 退出脚本返回状态 会被try截取
         sys.exc_info()        # 获取当前正在处理的异常类
-        sys.version           # 获取Python解释程序的版本信息
-        sys.maxint            # 最大的Int值  9223372036854775807
-        sys.maxunicode        # 最大的Unicode值
-        sys.modules           # 返回系统导入的模块字段，key是模块名，value是模块
         sys.path              # 返回模块的搜索路径，初始化时使用PYTHONPATH环境变量的值
         sys.platform          # 返回操作系统平台名称
         sys.stdout            # 标准输出
@@ -979,7 +976,7 @@
         sys.exec_prefix       # 返回平台独立的python文件安装的位置
         sys.stdin.readline()  # 从标准输入读一行
         sys.stdout.write("a") # 屏幕输出a
-        sys.path.insert(1, os.path.join(sys.path[0], '/opt/script/'))     # 将/opt/script/目录加入环境变量，可导入相应模块
+        *sys.path.insert(1, os.path.join(sys.path[0], '/opt/script/'))     # 将/opt/script/目录加入环境变量，可导入相应模块
 
     os              [系统模块]
 
@@ -987,11 +984,13 @@
         os.popen('id').read()      # 执行系统命令得到返回结果
         os.system()                # 得到返回状态 返回无法截取
         os.name                    # 返回系统平台 Linux/Unix用户是'posix'
-        os.getenv()                # 读取环境变量
+        os.getenv()                # 读取环境变量,如果没有返回none
         os.putenv()                # 设置环境变量
         os.getcwd()                # 当前工作路径
         os.chdir()                 # 改变当前工作目录
-        os.walk('/root/')          # 递归路径
+        os.listdir('/root')        # 查看 root 目录下的文件
+        os.mkdir('path')           # 创建单层目录，可以设置mode(权限属性)，多层目录用
+        os.walk('/root/')          # 递归路径,得到一个生成器,
         os.environ['HOME']         # 查看系统环境变量
         os.statvfs("/")            # 获取磁盘信息
 
@@ -1001,10 +1000,8 @@
             rename()/renames()     # 重命名文件
             stat()                 # 返回文件信息
             symlink()              # 创建符号链接
-            utime()                # 更新时间戳
-            tmpfile()              # 创建并打开('w+b')一个新的临时文件
+            utime()                # 更文件新时间戳
             walk()                 # 遍历目录树下的所有文件名
-
             oct(os.stat('th1.py').st_mode)[-3:]      # 查看目录权限
 
         目录/文件夹
@@ -1016,8 +1013,8 @@
             rmdir()/removedirs()   # 删除目录/删除多层目录
 
         访问/权限
-            saccess()                    # 检验权限模式
-            chmod('txt',eval("0777"))    # 改变权限模式
+            access()                     # 检验权限模式
+            chmod('txt',mode)            # 改变权限模式,配合stat修改，具体可查看菜鸟教程
             chown()/lchown()             # 改变owner和groupID功能相同,但不会跟踪链接
             umask()                      # 设置默认权限模式
 
@@ -1040,7 +1037,7 @@
                 os.path.join()             # 将分离的各部分组合成一个路径名
                 os.path.spllt()            # 返回(dirname(),basename())元组
                 os.path.splitdrive()       # 返回(drivename,pathname)元组
-                os.path.splitext()         # 返回(filename,extension)元组
+                os.path.splitext()         # 返回(filename,extension<文件后缀，配合join修改文件后缀名>)元组
 
             信息
                 os.path.getatime()         # 返回最近访问时间
@@ -1084,11 +1081,13 @@
             disk.f_bsize * disk.f_bavail / 1024 / 1024 / 1024   # 非root用户剩余空间大小G
             disk.f_bsize * disk.f_blocks / 1024 / 1024 / 1024   # 分区空间总大小
 
-    commands        [执行系统命令]
+    commands        [执行系统命令]（python3 已经没有了，python使用subprocess）
 
         commands.getstatusoutput('id')       # 返回元组(状态,标准输出)
         commands.getoutput('id')             # 只返回执行的结果, 忽略返回值
         commands.getstatus('file')           # 返回ls -ld file执行的结果
+
+
 
     re              [perl风格正则]
 
@@ -1104,11 +1103,11 @@
 
         零宽断言
             str = 'aaa111aaa , bbb222&, 333ccc'
-            re.compile('\d+(?=[a-z]+)').findall(str)          # 前向界定 (?=exp) 找出连续的数字并且最后一个数字跟着至少一个a-z ['111', '333']
-            re.compile(r"\d+(?![a-z]+)").findall(str)         # 前向否定界定 (?!exp)  找出连续数字，且最后一个数字后不能跟a-z  ['11', '222', '33']
-            re.compile(r"(?<=[a-z])\d+").findall(str)         # 反向界定 (?<=exp) 逆序环视 找出连续的数字，且第一个数字前面是a-z  ['111', '222']
-            re.compile(r"(?<![a-z])\d+").findall(str)         # 反向否定界定 (?<!exp) 否定逆序环视  找出连续的数字，且第一个数字前不能是a-z  ['11', '22', '333']
-            re.compile(r"(?:\d+)").findall(str)               # 无捕获的匹配 (?:exp)
+            re.compile('\d+(?=[a-z]+)').findall(str)          # 前向界定 (?=exp)：（表示匹配正则前面的位置） 找出连续的数字并且最后一个数字跟着至少一个a-z ['111', '333']
+            re.compile(r"\d+(?![a-z]+)").findall(str)         # 前向否定界定 (?!exp)：（匹配后面跟的不是exp的位置）  找出连续数字，且最后一个数字后不能跟a-z  ['11', '222', '33']
+            re.compile(r"(?<=[a-z])\d+").findall(str)         # 反向界定 (?<=exp) ：（匹配exp后面的位置）  逆序环视 找出连续的数字，且第一个数字前面是a-z  ['111', '222']
+            re.compile(r"(?<![a-z])\d+").findall(str)         # 反向否定界定 (?<!exp)：（匹配前面不是exp的位置） 否定逆序环视  找出连续的数字，且第一个数字前不能是a-z  ['11', '22', '333']
+            re.compile(r"(?:\d+)").findall(str)               # 无捕获的匹配 (?:exp)：（?: 表示 类似（...），但是不表示一个组）
             s= 'Tom:9527 , Sharry:0003 '
             re.match( r'(?P<name>\w+):(?P<num>\d+)' , s).group(0)   # 捕获组 <num>第二个标签变量[9527] 获取 group("num") 等同 group(2)[9527], group(0)全部[Tom:9527]
 
@@ -1127,6 +1126,7 @@
             Ip='222.129.184.52'
             s = requests.post(url=QueryAdd, data={'IP':Ip})
             re.findall(u'\u4e2d\u56fd', s.text, re.S)
+
 
     csv             [访问csv逗号分隔的文件]
 
@@ -1156,8 +1156,11 @@
     shutil          [提供高级文件访问功能]
 
         import shutil
-        shutil.copyfile('data.db', 'archive.db')             # 拷贝文件
-        shutil.move('/build/executables', 'installdir')      # 移动文件或目录
+        shutil.copyfile('data.db', 'archive.db')             		  # 拷贝文件
+        shutil.move('/build/executables', 'installdir')               # 移动文件或目录
+		shutil.copyfileobj(open('old.xml','r'), open('new.xml', 'w')) #把一个文件里面的内容追加到另外一个文件的结尾
+		shutil.make_archive('abc','tar','/opt/gitcode/python_development/examples') #将/opt/gitcode/python_development/examples，下的文件打包成abc.tar 到当前目录、shutil 对压缩包的处理是通过调用ZipFile 和 TarFile两个模块来进行的。
+		#shutil 功能还有： 仅拷贝文件权限，仅考本文件状态和信息，拷贝文件和权限，拷贝文件和状态信息
 
     dircache        [目录文件列表缓存]
 
@@ -1178,7 +1181,7 @@
         random.random()                 # 随机浮点数
         random.randrange(6)             # 随机整数范围
 
-    tempfile        [创建临时文件]
+    tempfile        [创建临时文件:临时文件来存储数据，但不需要同其他程序共享]
 
         import os
         import tempfile
@@ -1189,10 +1192,10 @@
             temp.writelines(['first\n', 'second\n'])   # 写入多行
             temp.seek(0)                               # 写入
              
-            print temp.read()                          # 读取
+            print(temp.read())                          # 读取
 
             for line in temp:                          # 循环读取每一行
-                print line.rstrip()
+                print(line.rstrip())
         finally:
             temp.close()                               # 关闭后删除临时文件
 
@@ -1222,89 +1225,38 @@
 
         发送邮件内容
 
-            #!/usr/bin/python
-            #encoding:utf8
-            # 导入 smtplib 和 MIMEText
-            import smtplib
-            from email.mime.text import MIMEText
+            #!/usr/bin/env python3
+			#coding:utf-8
+			import smtplib
+			import email.mime.multipart
+			import email.mime.text
 
-            # 定义发送列表
-            mailto_list=["272121935@qq.com","272121935@163.com"]
+			def send_mail(message):
+				mailto_list = ["abc@phc-dow.com","def@phc-dow.com"]
+				msg = email.mime.multipart.MIMEMultipart()
+				msg['from'] = 'ryan9093@163.com'             #发件人地址
+				msg['to'] = ";".join(mailto_list)           #收件人地址
+				msg['subject'] = 'python3 smtp test'         #主题
+				content = '''''
+					你好，这是一封自动发送的邮件。
+					内容为：%s
+				''' % (message)    #发件内容
+				txt = email.mime.text.MIMEText(content)
+				msg.attach(txt)
 
-            # 设置服务器名称、用户名、密码以及邮件后缀
-            mail_host = "smtp.163.com"
-            mail_user = "mailuser"
-            mail_pass = "password"
-            mail_postfix="163.com"
+				smtp = smtplib
+				smtp = smtplib.SMTP()
+				smtp.connect('smtp.163.com', '25')                    #发件箱服务器以及端口
+				smtp.login('ryan9093@163.com', 'smtp认证码')     #发件箱，以及发件箱的smtp认证码
+				smtp.sendmail('ryan9093@163.com', mailto_list, str(msg))   #发件箱，收件箱，
+				smtp.quit()
 
-            # 发送邮件函数
-            def send_mail(to_list, sub):
-                me = mail_user + "<"+mail_user+"@"+mail_postfix+">"
-                fp = open('context.txt')
-                msg = MIMEText(fp.read(),_charset="utf-8")
-                fp.close()
-                msg['Subject'] = sub
-                msg['From'] = me
-                msg['To'] = ";".join(to_list)
-                try:
-                    send_smtp = smtplib.SMTP()
-                    send_smtp.connect(mail_host)
-                    send_smtp.login(mail_user, mail_pass)
-                    send_smtp.sendmail(me, to_list, msg.as_string())
-                    send_smtp.close()
-                    return True
-                except Exception, e:
-                    print str(e)
-                    return False
+			mess = "python3 邮件测试"
+			send_mail(mess)
+                
 
-            if send_mail(mailto_list,"标题"):
-                print "测试成功"
-            else:
-                print "测试失败"
-
-        发送附件
-
-            #!/usr/bin/python
-            #encoding:utf8
-            import smtplib
-            from email.mime.multipart import MIMEMultipart
-            from email.mime.base import MIMEBase
-            from email import encoders
-
-            def send_mail(to_list, sub, filename):
-                me = mail_user + "<"+mail_user+"@"+mail_postfix+">"
-                msg = MIMEMultipart()
-                msg['Subject'] = sub
-                msg['From'] = me
-                msg['To'] = ";".join(to_list)
-                submsg = MIMEBase('application', 'x-xz')
-                submsg.set_payload(open(filename,'rb').read())
-                encoders.encode_base64(submsg)
-                submsg.add_header('Content-Disposition', 'attachment', filename=filename)
-                msg.attach(submsg)
-                try:
-                    send_smtp = smtplib.SMTP()
-                    send_smtp.connect(mail_host)
-                    send_smtp.login(mail_user, mail_pass)
-                    send_smtp.sendmail(me, to_list, msg.as_string())
-                    send_smtp.close()
-                    return True
-                except Exception, e:
-                    print str(e)[1]
-                    return False
-
-            # 设置服务器名称、用户名、密码以及邮件后缀
-            mail_host = "smtp.163.com"
-            mail_user = "xuesong"
-            mail_pass = "mailpasswd"
-            mail_postfix = "163.com"
-            mailto_list = ["272121935@qq.com","quanzhou722@163.com"]
-            title = 'check'
-            filename = 'file_check.html'
-            if send_mail(mailto_list,title,filename):
-                print "发送成功"
-            else:
-                print "发送失败"
+        发送附件，基于ssl的邮件，带图片的邮件，可查看：http://www.cnblogs.com/lonelycatcher/archive/2012/02/09/2343463.html
+		
 
     gzip            [解压缩gzip 删除原文件]
 
@@ -1348,24 +1300,42 @@
         tar.close()
 
     zipfile         [解压缩zip 最大2G]
+	
+        # 压缩zip	
+		#!/usr/bin/env python3
+		#coding:utf-8
+		import zipfile,os
+		def get_zip_file(input_path,result):
+			files = os.listdir(input_path)
+			for file in files:
+				if os.path.isdir(input_path+'/'+file):
+					get_zip_file(input_path+'/'+file,result)
+				else:
+					result.append(input_path+'/'+file)
 
-        # 压缩zip
-        import zipfile,os
-        f = zipfile.ZipFile('filename.zip', 'w' ,zipfile.ZIP_DEFLATED)    # ZIP_STORE 为默认表不压缩. ZIP_DEFLATED 表压缩
-        #f.write('file1.txt')                              # 将文件写入压缩包
-        for path,dir,files in os.walk("tartest"):          # 递归压缩目录
-            for file in files:
-                f.write(os.path.join(path,file))           # 将文件逐个写入压缩包
-        f.close()
+		def zip_path(input_path,output_path,output_name):
+			f = zipfile.ZipFile(output_path+'/'+output_name,'w',zipfile.ZIP_DEFLATED) # ZIP_STORE 为默认表不压缩. ZIP_DEFLATED 表压缩
+			filelists = []
+			get_zip_file(input_path,filelists)
+			for file in filelists:
+				f.write(file)
+			f.close()
+			return output_path+"/"+output_name
+
+		if __name__ == '__main__':
+			zip_path(r".","/tmp/test",'pythonzip.zip')
+
 
         # 解压zip
-        if zipfile.is_zipfile('filename.zip'):             # 判断一个文件是不是zip文件
-            f = zipfile.ZipFile('filename.zip')
+        if zipfile.is_zipfile('/tmp/test/pythonzip.zip'):             # 判断一个文件是不是zip文件
+            f = zipfile.ZipFile('/tmp/test/pythonzip.zip')
             for file in f.namelist():                      # 返回文件列表
-                f.extract(file, r'/tmp/')                  # 解压指定文件
+                f.extract(file, r'/tmp/test/')                  # 解压指定文件
             #f.extractall()                                # 解压全部
             f.close()
 
+			
+			================================there=========================================
     time/datetime   [时间]
 
         import time
