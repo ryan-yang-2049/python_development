@@ -1342,7 +1342,7 @@
         time.strftime('%Y%m%d_%H%M')         # 格式化时间
         time.time()                          # 时间戳[浮点]
         int(time.time())                     # 时间戳[整s]
-        time.localtime()[1] - 1              # 上个月
+        time.localtime()[1] - 1              # 上个月的月份
         time.strftime('%Y-%m-%d_%X',time.localtime( time.time() ) )              # 时间戳转日期
         time.mktime(time.strptime('2012-03-28 06:53:40', '%Y-%m-%d %H:%M:%S'))   # 日期转时间戳
 
@@ -1351,7 +1351,7 @@
             #encoding:utf8
             import time
             while 1:
-                atime=raw_input('输入格式如[14.05.13 13:00]:')
+                atime=input('输入格式如[14.05.13 13:00]:')
                 try:
                     btime=time.mktime(time.strptime('%s:00' %atime, '%y.%m.%d %H:%M:%S'))
                     break
@@ -1380,38 +1380,18 @@
             d3 = d1 + datetime.timedelta(hours=10)
             d3.ctime()
 
-    optparse        [解析参数及标准提示]
+    argparse        [argparse是python用于解析命令行参数和选项的标准模块]
+        argparse 代替optparse模块
+        #http://blog.csdn.net/guojuxia/article/details/44462807 很详细
+
 
         import os, sys
         import time
         import optparse
         # python aaa.py -t file -p /etc/opt -o aaaaa
+        #直接展示一段强化版的代码，小用法看代码测试
+        
 
-        def do_fiotest( type, path, output,):
-            print type, path, output,
-
-        def main():
-            parser = optparse.OptionParser()
-            parser.add_option('-t', '--type', dest = 'type', default = None, help = 'test type[file, device]')
-            parser.add_option('-p', '--path', dest = 'path', default = None, help = 'test file path or device path')
-            parser.add_option('-o', '--output', dest = 'output', default = None, help = 'result dir path')
-
-            (o, a) = parser.parse_args()
-
-            if None == o.type or None == o.path or None == o.output:
-                print "No device or file or output dir"
-                return -1
-
-            if 'file' != o.type and 'device' != o.type:
-                print "You need specify test type ['file' or 'device']"
-                return -1
-
-            do_fiotest(o.type, o.path, o.output)
-            print "Test done!"
-
-
-        if __name__ == '__main__':
-            main()
 
     getopt          [解析参数]
 
