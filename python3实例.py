@@ -15,7 +15,7 @@
 		make && make install
 		添加环境变量：
 		[root@web-rs01 scripts]# tail -n 1 /etc/profile
-		export PATH="/usr/local/python363/bin/:$PATH"
+		export PATH="/usr/local/python36/bin/:$PATH"
 		source /etc/profile
 		ln -s /usr/local/python36/bin/python3 /usr/bin/python3
 		ln -s /usr/local/python36/bin/pip3 /usr/bin/pip3
@@ -1253,7 +1253,37 @@
 
 			mess = "python3 邮件测试"
 			send_mail(mess)
-                
+        
+		发送加密邮件：
+			#!/usr/bin/env python3
+			#coding:utf-8
+			import smtplib
+			import email.mime.multipart
+			import email.mime.text
+
+			def send_mail(message):
+				mailto_list = ["461580544@qq.com","809074558@qq.com"]
+				msg = email.mime.multipart.MIMEMultipart()   #采用related定义内嵌资源的邮件体   
+				msg['from'] = 'ryan9093@163.com'             #发件人地址
+				msg['to'] = ";".join(mailto_list)           #收件人地址
+				msg['subject'] = 'python3 smtp test'         #主题
+				content = '''''
+					你好，这是一封自动发送的邮件。
+
+					内容为：%s
+
+				''' % (message)    #发件内容
+				txt = email.mime.text.MIMEText(content,_subtype='plain',_charset='utf-8') #_subtype有plain,html等格式，避免使用错误  
+				msg.attach(txt)
+
+				smtp = smtplib.SMTP_SSL('smtp.163.com',465)			#邮箱服务器，以及对应的ssl加密端口
+				smtp.login('ryan9093@163.com', 'ryan461580544')     #发件箱，以及发件箱的smtp认证码
+				smtp.sendmail('ryan9093@163.com', mailto_list, str(msg))   #发件箱，收件箱，
+				smtp.quit()
+
+			mess = "python3 ssl 邮件测试!"
+			send_mail(mess)
+
 
         发送附件，基于ssl的邮件，带图片的邮件，可查看：http://www.cnblogs.com/lonelycatcher/archive/2012/02/09/2343463.html
 		
@@ -1335,7 +1365,7 @@
             f.close()
 
 			
-			================================there=========================================
+
     time/datetime   [时间]
 
         import time
@@ -1379,20 +1409,7 @@
             d1 = datetime.datetime.now()
             d3 = d1 + datetime.timedelta(hours=10)
             d3.ctime()
-
-    argparse        [argparse是python用于解析命令行参数和选项的标准模块]
-        argparse 代替optparse模块
-        #http://blog.csdn.net/guojuxia/article/details/44462807 很详细
-
-
-        import os, sys
-        import time
-        import optparse
-        # python aaa.py -t file -p /etc/opt -o aaaaa
-        #直接展示一段强化版的代码，小用法看代码测试
-        
-
-
+			
     getopt          [解析参数]
 
         import sys,os
@@ -1401,23 +1418,24 @@
         try:
             options,argsErr = getopt.getopt(sys.argv[1:],"hu:c:",["help","user=","cmd="])    # 中间短参数，后面长参数对应. 不带:或=代表不带参数
         except getopt.GetoptError:
-            print "Unknown parameters,More info with: %s -h" %(sys.argv[0])
+            print("Unknown parameters,More info with: %s -h" %(sys.argv[0]))
             sys.exit(2)
         if argsErr != []:
-            print "Unknown parameters,More info with: %s -h" %(sys.argv[0])
+            print("Unknown parameters,More info with: %s -h" %(sys.argv[0]))
             sys.exit(2)
 
         for o,a in  options:
             if o in ("-h","--help"):
-                print '''Usage: python te.py -u user -c "cmd -options" '''
+                print('''Usage: python te.py -u user -c "cmd -options" ''')
                 sys.exit(2)
             if o in ("-u","--user"):
                 user = a
             if o in ("-c","--cmd"):
                 cmd = a
-        print user,cmd
+        print(user,cmd)
 
     argparse        [命令行选项和参数解析库]
+		[argparse是python用于解析命令行参数和选项的标准模块]
 
         import argparse
         parser = argparse.ArgumentParser( prog='usage_name', description='开头打印', epilog="结束打印")
@@ -1431,22 +1449,46 @@
         parser.get_default('foo')                                                 # 获取
 
         python a.py --foo ww  --aa 40 xuesong 27                                  # 执行此脚本
+		
+		例2：
+		#!/usr/bin/env python3
+		#coding:utf-8
+		import argparse  
+		parser = argparse.ArgumentParser()  
+		parser.add_argument("x", type=int, help="the base")  
+		parser.add_argument("y", type=int, help="the exponent")  
+		parser.add_argument("-v", "--verbosity", action="count", default=0)  
+		args = parser.parse_args()  
+		answer = args.x**args.y  
+		if args.verbosity >= 2:  
+			print("Running '{}'".format(__file__))
+		elif args.verbosity >= 1:  
+			print("{}^{} =={}".format(args.x, args.y,answer)) 
+		else:
+			print(answer)
 
     subprocess      [子进程管理]
 
         import subprocess
         s=subprocess.Popen('ls', shell=True, \
                 stdin = subprocess.PIPE, stdout = subprocess.PIPE, stderr = subprocess.PIPE)
-        print s.stdout.read()
-        print s.stderr.read()
-        print s.wait()         # 等待子进程结束。并返回执行状态 shell 0为正确
+        print(str(s.stdout.read().decode(encoding='utf-8')))
+        print(s.stderr.read()）
+        print(s.wait())         # 等待子进程结束。并返回执行状态 shell 0为正确
 
     base64          [编码]
 
         # 简单但容易被直接破解
-        import base64
-        s1 = base64.encodestring('hello world')
-        s2 = base64.decodestring(s1)
+		import base64
+		str01="i love sh"
+		bytesStr01 = str01.encode(encoding="utf-8")
+		encoderes=base64.b64encode(bytesStr01)
+		print(encoderes)
+		b'aSBsb3ZlIHNo'
+		decoderes = base64.b64decode(encoderes)
+		print(decoderes)
+		b'i love sh'
+
 
     uu              [对文件uu编码]
 
@@ -1462,27 +1504,26 @@
         m = md5.new('123456').hexdigest()
 
     hashlib         [hash算法库]
-
-        import hashlib
-        m = hashlib.md5()
-        m.update("Nobody inspects")    # 使用update方法对字符串md5加密
-        m.digest()                     # 加密后二进制结果
-        m.hexdigest()                  # 加密后十进制结果
-        hashlib.new("md5", "string").hexdigest()               # 对字符串加密
-        hashlib.new("md5", open("file").read()).hexdigest()    # 查看文件MD5值
-
-        hashlib.sha224("Nobody inspects the spammish repetition").hexdigest()       # 几种hash算法 sha1  sha224  sha256  sha384  ha512
+	
+		import hashlib
+		hash = hashlib.md5()
+		hash.update('everyday study python'.encode(encoding="utf-8"))     # 使用update方法对字符串md5加密
+		print(hash.hexdigest())				#加密后二进制结果，结果：80be0b95f340b0b725b6a7946ac7534b
+		print(hash.digest())				#加密后十进制结果，结果：b'\x80\xbe\x0b\x95\xf3@\xb0\xb7%\xb6\xa7\x94j\xc7SK'
+		hashlib.new("md5",open("passwd").read().encode(encoding='utf-8')).hexdigest()  #查看文件MD5的值
+		hashlib.new("md5","admin".encode(encoding='utf-8')).hexdigest()		#对字符串加密   结果：'21232f297a57a5a743894a0e4a801fc3'
+		hashlib.sha224(("Nobody inspects the spammish repetition").encode(encoding='utf-8')).hexdigest()   # 几种hash算法 sha1  sha224  sha256  sha384  ha512     
 
     crypt           [单向加密]
 
         import crypt
         import random,string
 
-        def getsalt(chars = string.letters+string.digits):
+        def getsalt(chars = string.ascii_letters+string.digits):      #sting 的ascii_letters 受系统语言环境变化影响
             return random.choice(chars)+random.choice(chars)
         salt = getsalt()
-        print salt
-        print crypt.crypt('bananas',salt)
+        print(salt)
+        print(crypt.crypt('bananas',salt))
 
     pycrypto        [加密]
 
@@ -1542,24 +1583,25 @@
 
         print decrypted
 
-    getpass         [隐藏输入密码]
+    getpass         [隐藏输入密码]<pycharm里不好使>
 
         import getpass
         passwd=getpass.getpass()
 
     string          [字符串类]
+		注：每个系统下的BIF不一样，下面列出linux下的BIF
 
         import string
         string.ascii_letters   # a-zA-Z  ascii的不受语言系统环境变化
         string.ascii_lowercase # a-z
-        string.letters         # a-zA-Z  受系统语言环境变化影响
-        string.lowercase       # a-z
-        string.uppercase       # A-Z大小
+        string.ascii_uppercase       # A-Z大小
         string.digits          # 0-9
         string.printable       # 所有字符
-        string.whitespace      # 空白字符
+        string.whitespace      # 空白字符，结果为:  ' \t\n\r\x0b\x0c'
 
     paramiko        [ssh客户端]
+		简介：
+			paramiko是一个基于SSH用于连接远程服务器并执行相关操作（SSHClient和SFTPCline即一个是远程连接，一个是上传下载服务），使用该模块可以对远程服务器进行命令或文件操作，值得一说的是，fabric和ansible内部的远程管理就是使用的paramiko来现实。
 
         安装
             sudo apt-get install python-setuptools
@@ -1583,11 +1625,11 @@
             s.set_missing_host_key_policy(paramiko.AutoAddPolicy())  # 允许连接不在know_hosts文件中的主机
             s.connect(host,22,user,password,timeout=5)               # 连接远程主机
             while True:
-                    cmd=raw_input('cmd:')
+                    cmd=input('cmd:')
                     stdin,stdout,stderr = s.exec_command(cmd)        # 执行命令
                     cmd_result = stdout.read(),stderr.read()         # 读取命令结果
                     for line in cmd_result:
-                            print line,
+                            print(line,)
             s.close()
 
         paramiko实例(传送文件)
