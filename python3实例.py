@@ -11,14 +11,14 @@
         wget https://www.python.org/ftp/python/3.6.3/Python-3.6.3.tgz
 		yum install readline-devel openssl-devel openssl  -y   #防止交互界面的上下左右不可用
 		tar xf Python-3.6.3.tgz
-		./configure --prefix=/usr/local/python363/
+		./configure --prefix=/usr/local/python36/
 		make && make install
 		添加环境变量：
 		[root@web-rs01 scripts]# tail -n 1 /etc/profile
 		export PATH="/usr/local/python363/bin/:$PATH"
 		source /etc/profile
-		ln -s /usr/local/python363/bin/python3 /usr/bin/python3
-		ln -s /usr/local/python363/bin/pip3 /usr/bin/pip3
+		ln -s /usr/local/python36/bin/python3 /usr/bin/python3
+		ln -s /usr/local/python36/bin/pip3 /usr/bin/pip3
 
 	linux 下面tab使用4空格：
 		vi /etc/vimrc
