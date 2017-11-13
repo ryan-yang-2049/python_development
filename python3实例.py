@@ -2118,7 +2118,8 @@
 
         difflib.get_close_matches('appel', ['ape', 'apple', 'peach', 'puppy'])           # 模糊匹配 匹配列表与字符串相似的值，越相似越靠前
 
-    heapq           [优先队列算法]
+    heapq           [优先队列算法](知道即可)
+        在Python中也对堆这种数据结构进行了模块化，我们可以通过调用heapq模块来建立堆这种数据结构，同时heapq模块也提供了相应的方法来对堆做操作
 
         from heapq import *
         h = []
@@ -2152,7 +2153,7 @@
 
         f = file("temp.json");
         s = json.load(f)        # 直接读取json文件
-        print s
+        print（s）
         f.close
 
         d = {"a":1}
@@ -2160,10 +2161,10 @@
         json.loads(j)    # json转字典
 
         s = json.loads('{"name":"test", "type":{"name":"seq", "parameter":["1", "2"]}}')
-        print type(s)    # dic
-        print s
-        print s.keys()
-        print s["type"]["parameter"][1]
+        print(type(s)）    # dic
+        print(s)
+        print(s.keys())
+        print(s["type"]["parameter"][1])
 
         json.dumps({'ret':'cmd_ret0', 'out':'cmd_ret1'}, separators=(',', ':'))    # 紧凑的json格式,去掉空格
 
@@ -2413,20 +2414,42 @@
         https://pypi.python.org/pypi/watchdog
         pip install watchdog
 
-        import sys
-        import time
-        import logging
         from watchdog.observers import Observer
-        from watchdog.events import LoggingEventHandler
+        from watchdog.events import *
+        import time
+
+        class FileEventHandler(FileSystemEventHandler):
+            def __init__(self):
+                FileSystemEventHandler.__init__(self)
+
+            def on_moved(self, event):
+                if event.is_directory:
+                    print("directory moved from {0} to {1}".format(event.src_path,event.dest_path))
+                else:
+                    print("file moved from {0} to {1}".format(event.src_path,event.dest_path))
+
+            def on_created(self, event):
+                if event.is_directory:
+                    print("directory created:{0}".format(event.src_path))
+                else:
+                    print("file created:{0}".format(event.src_path))
+
+            def on_deleted(self, event):
+                if event.is_directory:
+                    print("directory deleted:{0}".format(event.src_path))
+                else:
+                    print("file deleted:{0}".format(event.src_path))
+
+            def on_modified(self, event):
+                if event.is_directory:
+                    print("directory modified:{0}".format(event.src_path))
+                else:
+                    print("file modified:{0}".format(event.src_path))
 
         if __name__ == "__main__":
-            logging.basicConfig(level=logging.INFO,
-                                format='%(asctime)s - %(message)s',
-                                datefmt='%Y-%m-%d %H:%M:%S')
-            path = sys.argv[1] if len(sys.argv) > 1 else '.'
-            event_handler = LoggingEventHandler()
             observer = Observer()
-            observer.schedule(event_handler, path, recursive=True)
+            event_handler = FileEventHandler()
+            observer.schedule(event_handler,"/scripts",True)
             observer.start()
             try:
                 while True:
@@ -2580,7 +2603,7 @@
             print 'cmd:'
             for line in data:print line
         s.close()
-
+===========there==============
     ftp
 
         ftpserver
