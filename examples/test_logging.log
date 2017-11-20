@@ -1,0 +1,5 @@
+Fri, 10 Nov 2017 09:42:07 ex24_logging.py[line:16] INFO 输入正确
+Fri, 10 Nov 2017 09:42:20 ex24_logging.py[line:19] ERROR 输入错误
+Fri, 10 Nov 2017 09:42:23 ex24_logging.py[line:16] INFO 输入正确
+Fri, 10 Nov 2017 09:42:24 ex24_logging.py[line:19] ERROR 输入错误
+Fri, 10 Nov 2017 09:42:25 ex24_logging.py[line:19] ERROR 输入错误
